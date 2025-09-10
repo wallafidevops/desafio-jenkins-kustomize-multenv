@@ -14,7 +14,7 @@ resources:
 images:
 - name: 216989136189.dkr.ecr.us-east-1.amazonaws.com/placeholder
   newName: 216989136189.dkr.ecr.us-east-1.amazonaws.com/hml-review-filmes
-  newTag: 29157ea275f6c12e4c1b544194d18e1d5eb780b4
+  newTag: c9b5f3dcf8ba02f45c62719dbfd59b4ae954de07
 
 patches:
 - path: replicas.yaml
