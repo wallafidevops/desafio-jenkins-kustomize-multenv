@@ -1,0 +1,24 @@
+
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namePrefix: prd-
+namespace: prd-reviewfilmes
+
+resources:
+- ../base
+- ./ingress.yaml
+- ./service.yaml
+- ./postgre.yaml
+
+images:
+- name: 216989136189.dkr.ecr.us-east-1.amazonaws.com/placeholder
+  newName: 216989136189.dkr.ecr.us-east-1.amazonaws.com/prd-review-filmes
+  newTag: latest
+
+
+
+patches:
+- path: replicas.yaml
+- path: patch-db.yaml

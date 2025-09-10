@@ -1,0 +1,13 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviewfilmes
+spec:
+  template:
+    spec:
+      containers:
+        - name: reviewfilmes
+          env:
+            - name: POSTGRE_HOST
+              value: prd-postgre

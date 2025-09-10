@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reviewfilmes
+  annotations:
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig":
+      { "Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301"}}'  
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/subnets: subnet-01163f9b99019c875, subnet-008e307d1ef7f8aae
+    alb.ingress.kubernetes.io/healthcheck-path: /healthz/ready
+    alb.ingress.kubernetes.io/healthcheck-port: "80"    
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:216989136189:certificate/6e3207c2-a1d1-4745-81d9-f517eba3dacf"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}, {"HTTP":80}]'     
+    alb.ingress.kubernetes.io/group.name: grupo-ingress     
+spec:
+  ingressClassName: alb  
+  rules:
+  - host: prod.app.wsnobrega.life
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prd-reviewfilmes
+            port: 
+              number: 80
+ 

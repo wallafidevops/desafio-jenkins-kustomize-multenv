@@ -1,0 +1,30 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviewfilmes
+  labels:
+    app: reviewfilmes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviewfilmes
+  template:
+    metadata:
+      labels:
+        app: reviewfilmes
+    spec:
+      containers:
+        - name: reviewfilmes
+          image: 216989136189.dkr.ecr.us-east-1.amazonaws.com/placeholder:latest
+          env:
+            - name: ASPNETCORE_HTTP_PORTS
+              value: "8080"
+            - name: POSTGRE_HOST
+              value: postgre
+            - name: ConnectionStrings__DefaultConnection
+              value: "Host=$(POSTGRE_HOST);Database=reviewfilmes;Username=reviewfilmes;Password=Passw0rd2024!"
+          ports:
+            - containerPort: 8080
+

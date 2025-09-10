@@ -1,0 +1,7 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviewfilmes     # nome do BASE (sem prefixo)
+spec:
+  replicas: 2
