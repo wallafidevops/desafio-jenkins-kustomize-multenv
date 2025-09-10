@@ -80,7 +80,7 @@ pipeline {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
           sh '''
-            set -euo pipefail
+            set -eu
             aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$AWS_ECR_URI"
 
             echo "Build/Push -> $AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA"
@@ -96,7 +96,7 @@ pipeline {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
           sh '''
-            set -euo pipefail
+            set -eu
             mkdir -p /tmp/trivy-cache ./reports
             echo "Trivy -> $AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA"
 
@@ -115,7 +115,7 @@ pipeline {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
           sh '''
-            set -euo pipefail
+            set -eu
             dotnet test src/Review-Filmes.Test.Unit/Review-Filmes.Test.Unit.csproj \
               --logger "trx;LogFileName=TestResults.trx" \
               --results-directory ./TestResults \
@@ -131,7 +131,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: "${env.SONAR_CRED_ID}", variable: 'SONAR_TOKEN')]) {
           sh '''
-            set -euo pipefail
+            set -eu
             mkdir -p .tools
             dotnet tool install dotnet-sonarscanner --tool-path .tools || true
             export PATH="$PATH:$(pwd)/.tools"
@@ -148,7 +148,7 @@ pipeline {
       steps {
         withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws']]) {
           sh '''
-            set -euo pipefail
+            set -eu
             aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "$AWS_ECR_URI"
             docker pull "$AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA" || echo "Imagem ainda não existe, prosseguindo…"
             docker push "$AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA"
@@ -161,7 +161,7 @@ pipeline {
       steps {
         withCredentials([ usernamePassword(credentialsId: 'git', usernameVariable: 'GITHUB_USERNAME', passwordVariable: 'GITHUB_PASSWORD') ]) {
           sh '''
-            set -euo pipefail
+            set -eu
 
             # Git identity
             git config --global user.name "$GIT_USER_NAME"
