@@ -208,13 +208,8 @@ pipeline {
             fi
 
             # ArgoCD sync
-            if argocd login "$ARGOCD_SERVER:443" --insecure --grpc-web --auth-token "$ARGOCD_TOKEN"; then
-              echo "Logado com token"
-            else
-              echo "Tentando login admin/senha…"
-              argocd login "$ARGOCD_SERVER:443" --insecure --grpc-web --username admin --password "$ARGOCD_TOKEN"
-            fi
 
+            argocd login "$ARGOCD_SERVER:443" --insecure --grpc-web --username admin --password "$ARGOCD_TOKEN"
             argocd app sync "$ARGOCD_APP_NAME" --force --prune --grpc-web
           '''
         }
