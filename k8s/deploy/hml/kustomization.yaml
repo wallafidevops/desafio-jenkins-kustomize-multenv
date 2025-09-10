@@ -6,17 +6,16 @@ namePrefix: hml-
 namespace: hml-reviewfilmes
 
 resources:
-  - ../base
-  - ./ingress.yaml
-  - ./service.yaml
-  - ./postgre.yaml
+- ../base
+- ./ingress.yaml
+- ./service.yaml
+- ./postgre.yaml
 
 images:
-  - name: 216989136189.dkr.ecr.us-east-1.amazonaws.com/placeholder
-    newName: 216989136189.dkr.ecr.us-east-1.amazonaws.com/hml-review-filmes
-    newTag: latest
+- name: 216989136189.dkr.ecr.us-east-1.amazonaws.com/placeholder
+  newName: 216989136189.dkr.ecr.us-east-1.amazonaws.com/hml-review-filmes
+  newTag: 6d8bb8d35a2a06c9d7eea97d864a4260cee6feef
 
 patches:
-  - path: replicas.yaml
-  - path: patch-db.yaml
-
+- path: replicas.yaml
+- path: patch-db.yaml
