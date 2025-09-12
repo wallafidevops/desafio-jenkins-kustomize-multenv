@@ -15,7 +15,7 @@ resources:
 images:
 - name: 216989136189.dkr.ecr.us-east-1.amazonaws.com/placeholder
   newName: 216989136189.dkr.ecr.us-east-1.amazonaws.com/prd-review-filmes
-  newTag: d0dcde7115dabe68543d03d4d42a712390715d9f
+  newTag: 3307fc6b5ca5159163bf3a45c05ccbde78796c3f
 
 
 
