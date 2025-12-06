@@ -163,9 +163,9 @@ pipeline {
           sh '''
             set -eu
 
-            # Git identity (adaptado pro github-actions[bot])
-            git config --global user.name "github-actions[bot]"
-            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            # Git identity
+            git config --global user.name "$GIT_USER_NAME"
+            git config --global user.email "$GIT_USER_EMAIL"
 
             # Clone GitOps (monorepo)
             rm -rf gitops && mkdir -p gitops
@@ -185,11 +185,10 @@ pipeline {
             [ -f "$OVERLAY_DIR/kustomization.yml" ] && KFILE="$OVERLAY_DIR/kustomization.yml"
 
             cd "$OVERLAY_DIR"
-
             # Substitui placeholder -> imagem+tag corretas
             kustomize edit set image "$AWS_ECR_URI/placeholder=$AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA"
 
-            echo "==== $(basename "$KFILE") apos edicao ===="
+            echo "==== $(basename "$KFILE") após edição ===="
             cat "$(basename "$KFILE")"
 
             # sanity check: não pode sobrar ':latest'
@@ -197,26 +196,26 @@ pipeline {
               echo "ERRO: imagem ficou :latest no render"
               exit 1
             fi
-
             cd - >/dev/null
 
-            # Commit/push apenas se mudou (adaptado do teu stage antigo)
+            # Commit/push apenas se mudou
             if ! git diff --quiet -- "$KFILE"; then
               git add "$KFILE"
-              git commit -m "[Jenkins] Changing image tag to $AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA"
+              git commit -m "[skip ci] ${STAGE}: Atualiza imagem para $AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA"
               git push origin "$GITOPS_BRANCH"
             else
               echo "Nenhuma mudança para commitar"
             fi
 
             # ArgoCD sync
+
             argocd login "$ARGOCD_SERVER:443" --insecure --grpc-web --username admin --password "$ARGOCD_TOKEN"
             argocd app sync "$ARGOCD_APP_NAME" --force --prune --grpc-web
           '''
         }
       }
     }
-
+  }
 
   post {
     always { echo 'Pipeline finalizada.' }
