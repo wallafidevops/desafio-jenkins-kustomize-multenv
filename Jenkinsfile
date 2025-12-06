@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-    // Comuns
+  
     DOCKER_HOST           = 'tcp://localhost:2375'
     DOCKER_TLS_VERIFY     = ''
     AWS_DEFAULT_REGION    = 'us-east-1'
@@ -217,7 +217,7 @@ pipeline {
       }
     }
 
-  } // <--- fecha stages
+  } 
 
   post {
     always {
