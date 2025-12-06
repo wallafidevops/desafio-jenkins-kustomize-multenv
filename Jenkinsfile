@@ -21,11 +21,11 @@ pipeline {
     // Artefatos
     ARTIFACTS_BUCKET_PATH = 'wordpress-216989136189'
 
-    // Git identity
+    // Git identity (não está mais sendo usado no sh, mas ok deixar)
     GIT_USER_NAME         = 'wallafidevops'
     GIT_USER_EMAIL        = 'wallafisantos55@gmail.com'
 
-    // ArgoCD
+    // ArgoCD (assumindo que 'argocd-token' é Secret Text)
     ARGOCD_SERVER         = 'argocd-server.argocd.svc.cluster.local'
     ARGOCD_TOKEN          = credentials('argocd-token')
   }
@@ -200,7 +200,7 @@ pipeline {
 
             cd - >/dev/null
 
-            # Commit/push apenas se mudou (adaptado do teu stage antigo)
+            # Commit/push apenas se mudou
             if ! git diff --quiet -- "$KFILE"; then
               git add "$KFILE"
               git commit -m "[Jenkins] Changing image tag to $AWS_ECR_URI/$IMAGE_NAME:$FULL_SHA"
@@ -217,8 +217,11 @@ pipeline {
       }
     }
 
+  } // <--- fecha stages
 
   post {
-    always { echo 'Pipeline finalizada.' }
+    always {
+      echo 'Pipeline finalizada.'
+    }
   }
 }
